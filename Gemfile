@@ -44,6 +44,12 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  # Funciones para crear modelos
+  gem 'factory_bot', require: false
+
+  # y su integración con rails
+  gem 'factory_bot_rails', require: false
 end
 
 group :development do
@@ -55,4 +61,7 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+
+  # Agrega los metodos context y should a minitest
+  gem "shoulda-context", "~> 2.0"
 end

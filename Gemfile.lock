@@ -101,6 +101,11 @@ GEM
       reline (>= 0.3.8)
     drb (2.2.1)
     erubi (1.13.0)
+    factory_bot (6.5.0)
+      activesupport (>= 5.0.0)
+    factory_bot_rails (6.4.4)
+      factory_bot (~> 6.5)
+      railties (>= 5.0.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
     i18n (1.14.6)
@@ -249,6 +254,7 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
+    shoulda-context (2.0.0)
     sprockets (4.2.1)
       concurrent-ruby (~> 1.0)
       rack (>= 2.2.4, < 4)
@@ -296,6 +302,8 @@ DEPENDENCIES
   brakeman
   capybara
   debug
+  factory_bot
+  factory_bot_rails
   importmap-rails
   jbuilder
   jwt (~> 2.9.3)
@@ -304,6 +312,7 @@ DEPENDENCIES
   rails (~> 7.2.1, >= 7.2.1.2)
   rubocop-rails-omakase
   selenium-webdriver
+  shoulda-context (~> 2.0)
   sprockets-rails
   stimulus-rails
   turbo-rails
