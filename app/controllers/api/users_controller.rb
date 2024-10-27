@@ -1,7 +1,8 @@
 class Api::UsersController < ApplicationController
   skip_before_action :verify_authenticity_token
   skip_before_action :authenticate_request, only: [:login, :signup]
-  before_action :check_avatar, only: [:signup]
+  before_action :check_user_avatar, only: [:signup]
+  before_action :check_email_and_password, only: [:login]
 
   def index
     @users = User.all
@@ -23,16 +24,20 @@ class Api::UsersController < ApplicationController
   end
 
   def login
-    @user = User.find_by(username: params[:username])
-    render json: { error: 'Wrong credentials' }, status: :not_found and return if @user.nil?
+    email = params[:email]
+    password = params[:password]
 
-    token = jwt_encode(user_id: @user.id)
+    user = User.find_by(email: email)
+    render json: { error: 'No existe ningun usuario con este e-mail' }, status: :not_found and return if user.nil?
 
-    if token.nil?
-      render json: { error: 'Token no generated' }, status: :unauthorized
+    if user.authenticate(password)
+      token = jwt_encode(user_id: user.id)
+      render json: { message: 'Usuario autenticado exitosamente', data: { token: token } }, status: :ok
     else
-      render json: { token: token }, status: :ok
+      render json: { message: 'Credenciales incorrectas, intentalo nuevamente' }, status: :unauthorized
     end
+
+    raise StandardError, 'No existe ningun usuario con este e-mail' if user.nil?
   end
 
   private
@@ -40,7 +45,12 @@ class Api::UsersController < ApplicationController
       params.require(:user).permit(:email, :username, :password)
     end
 
-    def check_avatar
+    def check_user_avatar
       render json: { message: 'El avatar esta vacío' }, status: :unprocessable_entity and return if params[:user][:avatar].nil?
+    end
+
+    def check_email_and_password
+      render json: { message: 'El email esta vacío' }, status: :unprocessable_entity and return if params[:email].nil?
+      render json: { message: 'La contraseña esta vacío' }, status: :unprocessable_entity and return if params[:password].nil?
     end
 end
