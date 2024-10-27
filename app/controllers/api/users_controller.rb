@@ -16,9 +16,9 @@ class Api::UsersController < ApplicationController
       user = User.new(**user_params, avatar: avatar.to_sym)
       user.save!
 
-      render json: { data: @user }, status: :ok
+      render json: { data: user }, status: :ok
     rescue StandardError => e
-      render json: { message: @user.errors.full_messages.join(', ').capitalize, error: e.message }, status: :unprocessable_entity
+      render json: { message: user.errors.full_messages.join(', ').capitalize, error: e.message }, status: :unprocessable_entity
     end
   end
 
