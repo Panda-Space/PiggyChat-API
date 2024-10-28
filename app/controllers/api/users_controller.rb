@@ -4,12 +4,6 @@ class Api::UsersController < ApplicationController
   before_action :check_user_avatar, only: [:signup]
   before_action :check_email_and_password, only: [:login]
 
-  def index
-    @users = User.all
-
-    render json: { status: true, data: @users }
-  end
-
   def signup
     begin
       avatar = params[:user][:avatar]
@@ -19,7 +13,10 @@ class Api::UsersController < ApplicationController
 
       render json: { data: user }, status: :ok
     rescue StandardError => e
-      render json: { message: user.errors.full_messages.join(', ').capitalize, error: e.message }, status: :unprocessable_entity
+      response = { error: e.message, message: 'No se pudo registrar tu usuario (error desconocido)' }
+      response[:message] = user.errors.full_messages.join(', ') unless user.nil?
+
+      render json: response, status: :unprocessable_entity
     end
   end
 
