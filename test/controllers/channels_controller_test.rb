@@ -1,48 +1,38 @@
-require "test_helper"
+require 'test_helper'
 
-class ChannelsControllerTest < ActionDispatch::IntegrationTest
-  setup do
-    @channel = channels(:one)
-  end
+class ChannelControllerTest < ActionDispatch::IntegrationTest
+  include JsonWebToken 
 
-  test "should get index" do
-    get channels_url
-    assert_response :success
-  end
-
-  test "should get new" do
-    get new_channel_url
-    assert_response :success
-  end
-
-  test "should create channel" do
-    assert_difference("Channel.count") do
-      post channels_url, params: { channel: { location: @channel.location, website: @channel.website } }
+  context 'create' do
+    setup do
+      @user = create(:user)
+      @token = jwt_encode(user_id: @user.id)
     end
 
-    assert_redirected_to channel_url(Channel.last)
-  end
+    should 'response :ok with right params' do
+      post api_channels_path,
+           params: { channel: { website: 'netflix.com', location: 'video/1234' } },
+           headers: { Authorization: "Bearear #{@token}" }
 
-  test "should show channel" do
-    get channel_url(@channel)
-    assert_response :success
-  end
-
-  test "should get edit" do
-    get edit_channel_url(@channel)
-    assert_response :success
-  end
-
-  test "should update channel" do
-    patch channel_url(@channel), params: { channel: { location: @channel.location, website: @channel.website } }
-    assert_redirected_to channel_url(@channel)
-  end
-
-  test "should destroy channel" do
-    assert_difference("Channel.count", -1) do
-      delete channel_url(@channel)
+      assert_response :ok
     end
 
-    assert_redirected_to channels_url
+    should 'response :unprocessable_entity with wrong params' do
+      post api_channels_path,
+           params: { channel: { location: 'video/1234' } },
+           headers: { Authorization: "Bearear #{@token}" }
+
+      assert_response :unprocessable_entity
+    end
+
+    should 'response :unprocessable_entity with website/location taken' do
+      @channel = create(:channel)
+
+      post api_channels_path,
+           params: { channel: { website: @channel.website, location: @channel.location } },
+           headers: { Authorization: "Bearear #{@token}" }           
+
+      assert_response :unprocessable_entity
+    end
   end
 end

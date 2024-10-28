@@ -39,13 +39,13 @@ class UserTest < ActiveSupport::TestCase
 
       should 'raise error with username taken' do
         assert_raises ActiveRecord::RecordInvalid do
-          create(:user, username: 'piggy')
+          create(:user, username: 'piggy', email: 'piggy2@gmail.com')
         end
       end
 
       should 'raise error with email taken' do
         assert_raises ActiveRecord::RecordInvalid do
-          create(:user, email: 'piggy@gmail.com')
+          create(:user, email: 'piggy@gmail.com', username: 'piggy2')
         end
       end
     end
