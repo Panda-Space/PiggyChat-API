@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_27_234728) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_28_034434) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -19,6 +19,17 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_27_234728) do
     t.string "location", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["website", "location"], name: "index_channels_on_website_and_location", unique: true
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.bigint "channel_id", null: false
+    t.bigint "user_id", null: false
+    t.text "content", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["channel_id"], name: "index_messages_on_channel_id"
+    t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -28,7 +39,9 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_27_234728) do
     t.string "password_digest", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["email"], name: "index_users_on_email"
-    t.index ["username"], name: "index_users_on_username"
+    t.index ["email", "username"], name: "index_users_on_email_and_username", unique: true
   end
+
+  add_foreign_key "messages", "channels", on_delete: :cascade
+  add_foreign_key "messages", "users", on_delete: :cascade
 end

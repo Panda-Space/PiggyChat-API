@@ -6,7 +6,13 @@ Rails.application.routes.draw do
         post :login
       end
     end
-    resources :channels
+
+    resources :channels do
+      member do
+        get :messages
+        post :messages, action: :create_message
+      end
+    end
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

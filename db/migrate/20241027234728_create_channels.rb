@@ -6,5 +6,7 @@ class CreateChannels < ActiveRecord::Migration[7.2]
 
       t.timestamps
     end
+
+    add_index :channels, [:website, :location], unique: true
   end
 end

@@ -2,6 +2,8 @@ class User < ApplicationRecord
   require 'securerandom'
   has_secure_password
 
+  has_many :messages, class_name: 'Message'
+  has_many :channels, through: :messages, class_name: 'Channel'
   enum avatar: { red: 'red', green: 'green', blue: 'blue' } #TODO: Terminar el path correcto para esto
 
   validates :username,

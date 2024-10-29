@@ -1,23 +1,23 @@
 class Api::ChannelsController < ApplicationController
   skip_before_action :verify_authenticity_token
-  before_action :set_channel, only: [:show, :edit, :update, :destroy]
+  before_action :set_channel, only: [:show, :create_message]
+  before_action :check_filter, only: [:index]
 
-  # GET /channels or /channels.json
   def index
-    @channels = Channel.all
+    website = params[:website]
+    location = params[:location]
+
+    channels = Channel.find_by(website: website, location: location)
+
+    render json: { data: channels }, status: :ok
   end
 
-  # GET /channels/1 or /channels/1.json
   def show
-  end
-
-  # GET /channels/new
-  def new
-    @channel = Channel.new
-  end
-
-  # GET /channels/1/edit
-  def edit
+    if @channel
+      render json: { data: @channel }, status: :ok
+    else
+      render json: { message: 'No se encontró el canal' }, status: :not_found
+    end
   end
 
   def create
@@ -57,13 +57,62 @@ class Api::ChannelsController < ApplicationController
     end
   end
 
+  def messages
+    channel_id = params[:id]
+    page = params[:page] || 1
+    per_page = params[:per_page] || 20
+    unread = params[:unread] || false
+
+    if unread
+      # TODO: Get unread
+      messages_count = Message.select(:id).where(channel_id: channel_id).limit(11).size
+      data = { count: messages_count }
+    else
+      data = Message.where(channel_id: channel_id).page(page).per(per_page)  
+    end
+
+    render json: { data: data }, status: :ok
+  end
+
+  def create_message
+    begin
+      render json: { message: 'No se encontró el canal' }, status: :not_found and return if @channel.nil?
+
+      user_id = @current_user.id
+      message = @channel.messages.create(**message_params, user_id: user_id)
+
+      if message.id
+        render json: { data: message }, status: :ok
+      else
+        render json: { message: 'No se pudo enviar tu mensaje' }, status: :not_found
+      end
+    rescue StandardError => e
+      render json: { error: e.message, message: 'No se pudo enviar tu mensaje (error desconocido)' }, status: :not_found
+    end
+  end
+
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_channel
-      @channel = Channel.find(params[:id])
+      begin
+        @channel = Channel.find(params[:id])
+      rescue 
+        return nil
+      end
     end
 
     def channel_params
       params.require(:channel).permit(:website, :location)
+    end
+
+    def message_params
+      params.require(:message).permit(:content)
+    end
+
+    def check_filter
+      params_message = []
+      params_message << 'website esta vacio' if params[:website].nil? 
+      params_message << 'location esta vacio' if params[:location].nil? 
+
+      render json: { message: params_message.join(', ').capitalize }, status: :unprocessable_entity and return if params_message.any?
     end
 end
