@@ -89,6 +89,7 @@ jobs:
         env:
           RAILS_ENV: test
           DATABASE_URL: postgres://postgres:postgres@localhost:5432
+          SECRET_KEY_BASE: 7decca7ad65880fffe271891bcbb357b7060f9114ea19bfce32a2c7130be6527e6f356ce58647f4f0d503e9fa8cb51c49a350123c7dcb67afe5a6b7646e5351
           # REDIS_URL: redis://localhost:6379/0
         run: bin/rails db:test:prepare test test:system
 

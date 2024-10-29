@@ -12,7 +12,7 @@ class ChannelControllerTest < ActionDispatch::IntegrationTest
     should 'response :ok with right params' do
       post api_channels_path,
            params: { channel: { website: 'netflix.com', location: 'video/1234' } },
-           headers: { Authorization: "Bearear #{@token}" }
+           headers: { Authorization: "Bearer #{@token}" }
 
       assert_response :ok
     end
@@ -20,7 +20,7 @@ class ChannelControllerTest < ActionDispatch::IntegrationTest
     should 'response :unprocessable_entity with wrong params' do
       post api_channels_path,
            params: { channel: { location: 'video/1234' } },
-           headers: { Authorization: "Bearear #{@token}" }
+           headers: { Authorization: "Bearer #{@token}" }
 
       assert_response :unprocessable_entity
     end
@@ -30,7 +30,7 @@ class ChannelControllerTest < ActionDispatch::IntegrationTest
 
       post api_channels_path,
            params: { channel: { website: @channel.website, location: @channel.location } },
-           headers: { Authorization: "Bearear #{@token}" }           
+           headers: { Authorization: "Bearer #{@token}" }           
 
       assert_response :unprocessable_entity
     end
@@ -40,7 +40,7 @@ class ChannelControllerTest < ActionDispatch::IntegrationTest
     should 'response :ok with website and location' do
       get api_channels_path,
            params: { website: 'netflix.com', location: 'video/1234' },
-           headers: { Authorization: "Bearear #{@token}" }
+           headers: { Authorization: "Bearer #{@token}" }
 
       assert_response :ok
     end
@@ -48,7 +48,7 @@ class ChannelControllerTest < ActionDispatch::IntegrationTest
     should 'response :unprocessable_entity with wrong params' do
       get api_channels_path,
            params: { location: 'video/1234' },
-           headers: { Authorization: "Bearear #{@token}" }
+           headers: { Authorization: "Bearer #{@token}" }
 
       assert_response :unprocessable_entity
     end
@@ -65,7 +65,7 @@ class ChannelControllerTest < ActionDispatch::IntegrationTest
 
     should 'response :ok without pagination' do
       get messages_api_channel_path(id: @channel.id),
-          headers: { Authorization: "Bearear #{@token}" }
+          headers: { Authorization: "Bearer #{@token}" }
 
       assert_response :ok
     end
@@ -73,7 +73,7 @@ class ChannelControllerTest < ActionDispatch::IntegrationTest
     should 'response right size with right pagination' do
       get messages_api_channel_path(id: @channel.id),
           params: { page: 1, per_page: 2 },
-          headers: { Authorization: "Bearear #{@token}" }
+          headers: { Authorization: "Bearer #{@token}" }
 
       data = JSON.parse(response.body)['data']
 
