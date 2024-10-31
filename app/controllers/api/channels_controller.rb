@@ -62,11 +62,24 @@ class Api::ChannelsController < ApplicationController
     page = params[:page] || 1
     per_page = params[:per_page] || 20
     unread = params[:unread] || false
+    user_id = @current_user.id
 
     if unread
-      # TODO: Get unread
-      messages_count = Message.select(:id).where(channel_id: channel_id).limit(11).size
-      data = { count: messages_count }
+      unread_messages_count = 0
+      message_base_query = Message.select(:id).where(channel_id: channel_id)
+      last_message_interaction = MessageInteraction.joins(:channel)
+                                                   .where(user_id: user_id)
+                                                   .where(viewed: true)
+                                                   .where(channel: { id: channel_id })
+                                                   .last
+
+      if last_message_interaction
+        unread_messages_count = message_base_query.where('created_at > ?', last_message_interaction.created_at).limit(11).size
+      else
+        unread_messages_count = message_base_query.limit(11).size
+      end
+
+      data = { count: unread_messages_count }
     else
       data = Message.where(channel_id: channel_id).page(page).per(per_page)  
     end

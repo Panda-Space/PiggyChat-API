@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_28_034434) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_31_042545) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -20,6 +20,16 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_28_034434) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["website", "location"], name: "index_channels_on_website_and_location", unique: true
+  end
+
+  create_table "message_interactions", force: :cascade do |t|
+    t.bigint "message_id", null: false
+    t.bigint "user_id", null: false
+    t.boolean "viewed"
+    t.boolean "liked"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["message_id", "user_id"], name: "index_message_interactions_on_message_id_and_user_id", unique: true
   end
 
   create_table "messages", force: :cascade do |t|
@@ -42,6 +52,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_28_034434) do
     t.index ["email", "username"], name: "index_users_on_email_and_username", unique: true
   end
 
+  add_foreign_key "message_interactions", "messages", on_delete: :cascade
+  add_foreign_key "message_interactions", "users", on_delete: :cascade
   add_foreign_key "messages", "channels", on_delete: :cascade
   add_foreign_key "messages", "users", on_delete: :cascade
 end
