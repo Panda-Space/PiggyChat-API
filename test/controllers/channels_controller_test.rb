@@ -58,9 +58,16 @@ class ChannelControllerTest < ActionDispatch::IntegrationTest
     setup do
       @channel = create(:channel)
 
-      create(:message, :with_user, channel: @channel)
-      create(:message, :with_user, channel: @channel)
-      create(:message, :with_user, channel: @channel)
+      travel_to Time.zone.local(2024, 11, 2, 10, 0, 0) do
+        @messages = [
+          create(:message, :with_user, channel: @channel),
+          create(:message, :with_user, channel: @channel),
+        ]
+      end
+
+      travel_to Time.zone.local(2024, 11, 2, 12, 0, 0) do
+        @messages << create(:message, :with_user, channel: @channel)
+      end
     end
 
     should 'response :ok without pagination' do
@@ -78,6 +85,33 @@ class ChannelControllerTest < ActionDispatch::IntegrationTest
       data = JSON.parse(response.body)['data']
 
       assert_equal 2, data.size
+    end
+
+    should 'response 3 unread messages without any viewed message' do
+      get messages_api_channel_path(id: @channel.id),
+          params: { unread: true },
+          headers: { Authorization: "Bearer #{@token}" }
+
+      data = JSON.parse(response.body)['data']
+
+      assert_equal 3, data['count']
+    end
+
+    should 'response 1 unread messages with 2 viewed message' do
+      travel_to Time.zone.local(2024, 11, 2, 11, 0, 0) do
+        create(:message_interaction, viewed: true, user: @user, message: @messages[0])
+        create(:message_interaction, viewed: true, user: @user, message: @messages[1])
+      end
+
+      travel_to Time.zone.local(2024, 11, 2, 13, 0, 0) do
+        get messages_api_channel_path(id: @channel.id),
+            params: { unread: true },
+            headers: { Authorization: "Bearer #{@token}" }
+
+        data = JSON.parse(response.body)['data']
+
+        assert_equal 1, data['count']
+      end
     end
   end
 end
