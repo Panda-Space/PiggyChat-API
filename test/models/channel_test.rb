@@ -4,8 +4,9 @@ class ChannelTest < ActiveSupport::TestCase
   context 'channel' do
     should 'create successfully' do
       channel = create(:channel)
+      channel = create(:channel, location: 'video/4321')
 
-      assert_equal 1, Channel.count
+      assert_equal 2, Channel.count
     end
 
     should 'raise error without website' do
@@ -25,15 +26,9 @@ class ChannelTest < ActiveSupport::TestCase
         @channel = create(:channel)
       end
 
-      should 'raise error with website taken' do
+      should 'raise error with website and location taken' do
         assert_raises ActiveRecord::RecordInvalid do
-          create(:channel, website: 'netflix.com', location: 'video/4321')
-        end
-      end
-
-      should 'raise error with location taken' do
-        assert_raises ActiveRecord::RecordInvalid do
-          create(:channel, website: 'cuevana.com', location: 'video/1234')
+          create(:channel)
         end
       end
     end

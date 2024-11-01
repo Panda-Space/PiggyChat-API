@@ -1,6 +1,6 @@
 class Api::ChannelsController < ApplicationController
   skip_before_action :verify_authenticity_token
-  before_action :set_channel, only: [:show, :create_messages]
+  before_action :set_channel, only: [:show, :create_messages, :update_messages]
   before_action :check_filter, only: [:index]
 
   def index
@@ -105,8 +105,23 @@ class Api::ChannelsController < ApplicationController
     end
   end
 
-  def mark_as_viewed_messages
+  def update_messages
+    render json: { message: 'No se encontró el canal' }, status: :not_found and return if @channel.nil?
 
+    operation = params[:operation]
+    user_id = @current_user.id
+
+    case operation
+    when 'mark_as_viewed'
+      message_ids = params[:message_ids]
+      message_interactions = message_ids.map {|message_id| { user_id: user_id, message_id: message_id, viewed: true }}
+
+      message_interactions.in_groups_of(500, false) do |batch|
+        MessageInteraction.import batch, on_duplicate_key_ignore: true
+      end
+
+      render json: { data: message_interactions }, status: :ok
+    end
   end
 
   private

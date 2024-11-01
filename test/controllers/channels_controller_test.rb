@@ -118,7 +118,7 @@ class ChannelControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  context 'create_message' do
+  context 'create_messages' do
     setup do
       @channel = create(:channel)
       @room = "chat_#{@channel.id}"
@@ -148,6 +148,30 @@ class ChannelControllerTest < ActionDispatch::IntegrationTest
           params: { message: { content: '' } }
 
       assert_response :unprocessable_entity
+    end
+  end
+
+  context 'update_messages' do
+    setup do
+      @user = create(:user, username: 'topin', email: 'topin@g.com')
+      @token = jwt_encode(user_id: @user.id)
+      @channel = create(:channel)
+      @messages = [
+        create(:message, :with_user, channel: @channel),
+        create(:message, :with_user, channel: @channel),
+      ]
+    end
+
+    should 'response :ok with right params' do
+      put messages_api_channel_path(id: @channel.id),
+          headers: { Authorization: "Bearer #{@token}" },
+          params: { operation: 'mark_as_viewed', message_ids: [@messages[0].id, @messages[1].id] }
+
+      data = JSON.parse(response.body)['data']
+
+      assert_response :ok
+      assert_equal 2, data.size
+      assert_equal 2, (data.select {|message_interaction| message_interaction['viewed']}).size
     end
   end
 end
