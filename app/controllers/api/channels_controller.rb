@@ -95,12 +95,13 @@ class Api::ChannelsController < ApplicationController
       message = @channel.messages.create(**message_params, user_id: user_id)
 
       if message.id
+        broadcast(message: message) #TODO: Llevarlo a un Job para trabajo paralelo
         render json: { data: message }, status: :ok
       else
-        render json: { message: 'No se pudo enviar tu mensaje' }, status: :not_found
+        render json: { message: 'No se pudo enviar tu mensaje' }, status: :unprocessable_entity
       end
     rescue StandardError => e
-      render json: { error: e.message, message: 'No se pudo enviar tu mensaje (error desconocido)' }, status: :not_found
+      render json: { error: e.message, message: 'No se pudo enviar tu mensaje (error desconocido)' }, status: :unprocessable_entity
     end
   end
 
@@ -127,5 +128,27 @@ class Api::ChannelsController < ApplicationController
       params_message << 'location esta vacio' if params[:location].nil? 
 
       render json: { message: params_message.join(', ').capitalize }, status: :unprocessable_entity and return if params_message.any?
+    end
+
+    def broadcast(message:)
+      channel_id = @channel.id
+      user = message.user
+
+      ActionCable.server.broadcast(
+        "chat_#{channel_id}",
+        {
+          user: {
+            id: user.id,
+            username: user.username,
+            avatar: user.avatar,
+          },
+          body: {
+            id: message.id,
+            channel_id: message.channel_id,
+            created_at: message.parsed_created_at,
+            content: message.content,
+          },
+        }
+      )
     end
 end

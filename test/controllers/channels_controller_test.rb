@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class ChannelControllerTest < ActionDispatch::IntegrationTest
+  include ActionCable::TestHelper
   include JsonWebToken
 
   setup do
@@ -112,6 +113,39 @@ class ChannelControllerTest < ActionDispatch::IntegrationTest
 
         assert_equal 1, data['count']
       end
+    end
+  end
+
+  context 'create_message' do
+    setup do
+      @channel = create(:channel)
+      @room = "chat_#{@channel.id}"
+    end
+
+    should 'response :ok with right params' do
+      post messages_api_channel_path(id: @channel.id),
+          headers: { Authorization: "Bearer #{@token}" },
+          params: { message: { content: 'Hola!' } }
+
+      assert_response :ok
+      assert_broadcast_on(ChatChannel.broadcasting_for(@room), text: "Testing!") do
+        ChatChannel.broadcast_to @room, text: 'Testing!'
+      end
+    end
+
+    should 'response :not_found with wrong channel' do
+      post messages_api_channel_path(id: 44),
+          headers: { Authorization: "Bearer #{@token}" }
+
+      assert_response :not_found
+    end
+
+    should 'response :unprocessable_entity with wrong params' do
+      post messages_api_channel_path(id: @channel.id),
+          headers: { Authorization: "Bearer #{@token}" },
+          params: { message: { content: '' } }
+
+      assert_response :unprocessable_entity
     end
   end
 end
