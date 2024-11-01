@@ -10,7 +10,8 @@ Rails.application.routes.draw do
     resources :channels do
       member do
         get :messages
-        post :messages, action: :create_message
+        post :messages, action: :create_messages
+        put :messages, action: :update_messages
       end
     end
   end

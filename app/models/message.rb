@@ -13,6 +13,10 @@ class Message < ApplicationRecord
 
   private
     def mark_as_viewed
-      MessageInteraction.create(user_id: user_id, message_id: id, viewed: true)
+      message_interaction = MessageInteraction.find_or_initialize_by(user_id: user_id, message_id: id) do |message_interaction|
+        message_interaction.viewed = true
+      end
+
+      message_interaction.save if message_interaction.new_record?
     end
 end

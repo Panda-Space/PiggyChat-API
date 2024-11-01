@@ -1,6 +1,6 @@
 class Api::ChannelsController < ApplicationController
   skip_before_action :verify_authenticity_token
-  before_action :set_channel, only: [:show, :create_message]
+  before_action :set_channel, only: [:show, :create_messages]
   before_action :check_filter, only: [:index]
 
   def index
@@ -87,7 +87,7 @@ class Api::ChannelsController < ApplicationController
     render json: { data: data }, status: :ok
   end
 
-  def create_message
+  def create_messages
     begin
       render json: { message: 'No se encontró el canal' }, status: :not_found and return if @channel.nil?
 
@@ -103,6 +103,10 @@ class Api::ChannelsController < ApplicationController
     rescue StandardError => e
       render json: { error: e.message, message: 'No se pudo enviar tu mensaje (error desconocido)' }, status: :unprocessable_entity
     end
+  end
+
+  def mark_as_viewed_messages
+
   end
 
   private

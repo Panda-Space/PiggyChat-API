@@ -3,7 +3,7 @@ require "test_helper"
 class MessageTest < ActiveSupport::TestCase
   context 'message' do
     should 'create successfully and mark as viewed' do
-      message = create(:message)
+      message = create(:message, :with_user, :with_channel)
 
       assert_equal 1, Message.count
       assert_equal 1, message.message_interactions.where(viewed: true).size

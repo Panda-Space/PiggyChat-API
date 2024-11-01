@@ -57,6 +57,8 @@ class ChannelControllerTest < ActionDispatch::IntegrationTest
 
   context 'messages' do
     setup do
+      @user = create(:user, username: 'topin', email: 'topin@g.com')
+      @token = jwt_encode(user_id: @user.id)
       @channel = create(:channel)
 
       travel_to Time.zone.local(2024, 11, 2, 10, 0, 0) do
