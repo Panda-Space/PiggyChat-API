@@ -81,7 +81,7 @@ class Api::ChannelsController < ApplicationController
 
       data = { count: unread_messages_count }
     else
-      data = Message.where(channel_id: channel_id).page(page).per(per_page)  
+      data = Message.where(channel_id: channel_id).page(page).per(per_page)
     end
 
     render json: { data: data }, status: :ok
@@ -95,7 +95,7 @@ class Api::ChannelsController < ApplicationController
       message = @channel.messages.create(**message_params, user_id: user_id)
 
       if message.id
-        broadcast(message: message) #TODO: Llevarlo a un Job para trabajo paralelo
+        broadcast(message: message) # TODO: Llevarlo a un Job para trabajo paralelo
         render json: { data: message }, status: :ok
       else
         render json: { message: 'No se pudo enviar tu mensaje' }, status: :unprocessable_entity
@@ -114,7 +114,7 @@ class Api::ChannelsController < ApplicationController
     case operation
     when 'mark_as_viewed'
       message_ids = params[:message_ids]
-      message_interactions = message_ids.map {|message_id| { user_id: user_id, message_id: message_id, viewed: true }}
+      message_interactions = message_ids.map { |message_id| { user_id: user_id, message_id: message_id, viewed: true } }
 
       message_interactions.in_groups_of(500, false) do |batch|
         MessageInteraction.import batch, on_duplicate_key_ignore: true
@@ -128,8 +128,8 @@ class Api::ChannelsController < ApplicationController
     def set_channel
       begin
         @channel = Channel.find(params[:id])
-      rescue 
-        return nil
+      rescue
+        nil
       end
     end
 
@@ -143,8 +143,8 @@ class Api::ChannelsController < ApplicationController
 
     def check_filter
       params_message = []
-      params_message << 'website esta vacio' if params[:website].nil? 
-      params_message << 'location esta vacio' if params[:location].nil? 
+      params_message << 'website esta vacio' if params[:website].nil?
+      params_message << 'location esta vacio' if params[:location].nil?
 
       render json: { message: params_message.join(', ').capitalize }, status: :unprocessable_entity and return if params_message.any?
     end
@@ -159,14 +159,14 @@ class Api::ChannelsController < ApplicationController
           user: {
             id: user.id,
             username: user.username,
-            avatar: user.avatar,
+            avatar: user.avatar
           },
           body: {
             id: message.id,
             channel_id: message.channel_id,
             created_at: message.parsed_created_at,
-            content: message.content,
-          },
+            content: message.content
+          }
         }
       )
     end

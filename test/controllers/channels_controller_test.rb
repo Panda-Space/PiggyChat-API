@@ -31,7 +31,7 @@ class ChannelControllerTest < ActionDispatch::IntegrationTest
 
       post api_channels_path,
            params: { channel: { website: @channel.website, location: @channel.location } },
-           headers: { Authorization: "Bearer #{@token}" }           
+           headers: { Authorization: "Bearer #{@token}" }
 
       assert_response :unprocessable_entity
     end
@@ -165,13 +165,13 @@ class ChannelControllerTest < ActionDispatch::IntegrationTest
     should 'response :ok with right params' do
       put messages_api_channel_path(id: @channel.id),
           headers: { Authorization: "Bearer #{@token}" },
-          params: { operation: 'mark_as_viewed', message_ids: [@messages[0].id, @messages[1].id] }
+          params: { operation: 'mark_as_viewed', message_ids: [ @messages[0].id, @messages[1].id ] }
 
       data = JSON.parse(response.body)['data']
 
       assert_response :ok
       assert_equal 2, data.size
-      assert_equal 2, (data.select {|message_interaction| message_interaction['viewed']}).size
+      assert_equal 2, (data.select { |message_interaction| message_interaction['viewed'] }).size
     end
   end
 end

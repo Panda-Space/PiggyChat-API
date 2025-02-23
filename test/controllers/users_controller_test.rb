@@ -26,5 +26,5 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  #TODO: Login
+  # TODO: Login
 end
