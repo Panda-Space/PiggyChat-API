@@ -1,0 +1,378 @@
+{
+  "yaakVersion": "2025.1.1",
+  "yaakSchema": 3,
+  "timestamp": "2025-02-23T16:11:54.854310700",
+  "resources": {
+    "workspaces": [
+      {
+        "model": "workspace",
+        "id": "wk_YSrzXmNxp3",
+        "createdAt": "2024-10-26T20:44:24",
+        "updatedAt": "2024-10-26T21:10:42",
+        "name": "Piggy Chat",
+        "description": "",
+        "settingValidateCertificates": true,
+        "settingFollowRedirects": true,
+        "settingRequestTimeout": 0
+      }
+    ],
+    "environments": [
+      {
+        "model": "environment",
+        "id": "ev_xMeStygufT",
+        "workspaceId": "wk_YSrzXmNxp3",
+        "environmentId": null,
+        "createdAt": "2025-02-23T15:50:11",
+        "updatedAt": "2025-02-23T15:50:11",
+        "name": "Global Variables",
+        "variables": [
+          {
+            "enabled": true,
+            "name": "API",
+            "value": "http://127.0.0.1:3000/api",
+            "id": null
+          },
+          {
+            "enabled": true,
+            "name": "",
+            "value": "",
+            "id": null
+          }
+        ]
+      }
+    ],
+    "folders": [
+      {
+        "model": "folder",
+        "id": "fl_FNUoKC7dzc",
+        "createdAt": "2024-10-28T04:53:45",
+        "updatedAt": "2024-10-28T04:53:51",
+        "workspaceId": "wk_YSrzXmNxp3",
+        "folderId": "fl_DikginT4RX",
+        "name": "Message",
+        "description": "",
+        "sortPriority": 3000.0
+      },
+      {
+        "model": "folder",
+        "id": "fl_DikginT4RX",
+        "createdAt": "2024-10-28T00:03:40",
+        "updatedAt": "2024-10-28T00:03:40",
+        "workspaceId": "wk_YSrzXmNxp3",
+        "folderId": null,
+        "name": "Channel",
+        "description": "",
+        "sortPriority": -1730073900000.0
+      },
+      {
+        "model": "folder",
+        "id": "fl_gHQIkxRCOV",
+        "createdAt": "2024-10-28T00:03:30",
+        "updatedAt": "2024-10-28T00:03:32",
+        "workspaceId": "wk_YSrzXmNxp3",
+        "folderId": null,
+        "name": "User",
+        "description": "",
+        "sortPriority": 1000.0
+      }
+    ],
+    "httpRequests": [
+      {
+        "model": "http_request",
+        "id": "rq_iF9FU9WCSg",
+        "createdAt": "2024-11-01T22:31:42",
+        "updatedAt": "2024-11-01T22:36:39",
+        "workspaceId": "wk_YSrzXmNxp3",
+        "folderId": "fl_FNUoKC7dzc",
+        "authentication": {
+          "token": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJleHAiOjE3MzA2OTQ2NzR9.yX2HSPY08qegwycZAGX4OfQIQa5iPKCAQBM_VOvcAiU"
+        },
+        "authenticationType": "bearer",
+        "body": {
+          "text": "{\n  \"operation\": \"mark_as_viewed\",\n  \"message_ids\": [1,2,3]\n}"
+        },
+        "bodyType": "application/json",
+        "description": "",
+        "headers": [
+          {
+            "enabled": true,
+            "name": "Content-Type",
+            "value": "application/json",
+            "id": null
+          }
+        ],
+        "method": "PUT",
+        "name": "messages",
+        "sortPriority": 0.0,
+        "url": "${[ API ]}/channels/1/messages",
+        "urlParameters": [
+          {
+            "enabled": true,
+            "name": "",
+            "value": "",
+            "id": null
+          }
+        ]
+      },
+      {
+        "model": "http_request",
+        "id": "rq_HIlscdbTvt",
+        "createdAt": "2024-10-28T04:54:04",
+        "updatedAt": "2024-11-01T23:29:35",
+        "workspaceId": "wk_YSrzXmNxp3",
+        "folderId": "fl_FNUoKC7dzc",
+        "authentication": {
+          "token": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJleHAiOjE3MzA2OTQ2NzR9.yX2HSPY08qegwycZAGX4OfQIQa5iPKCAQBM_VOvcAiU"
+        },
+        "authenticationType": "bearer",
+        "body": {
+          "text": "{\n  \"message\": {\n    \"content\": \"asdas dasd asd\"\n  }\n}"
+        },
+        "bodyType": "application/json",
+        "description": "",
+        "headers": [
+          {
+            "enabled": true,
+            "name": "Content-Type",
+            "value": "application/json",
+            "id": null
+          }
+        ],
+        "method": "POST",
+        "name": "messages",
+        "sortPriority": 0.0,
+        "url": "${[ API ]}/channels/1/messages",
+        "urlParameters": [
+          {
+            "enabled": true,
+            "name": "",
+            "value": "",
+            "id": null
+          }
+        ]
+      },
+      {
+        "model": "http_request",
+        "id": "rq_2mTqqvP9P3",
+        "createdAt": "2024-10-28T03:31:31",
+        "updatedAt": "2025-02-23T15:51:33.720961900",
+        "workspaceId": "wk_YSrzXmNxp3",
+        "folderId": "fl_FNUoKC7dzc",
+        "authentication": {
+          "token": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJleHAiOjE3MzA2OTQ2NzR9.yX2HSPY08qegwycZAGX4OfQIQa5iPKCAQBM_VOvcAiU"
+        },
+        "authenticationType": "bearer",
+        "body": {
+          "text": ""
+        },
+        "bodyType": "application/json",
+        "description": "",
+        "headers": [
+          {
+            "enabled": true,
+            "name": "Content-Type",
+            "value": "application/json",
+            "id": null
+          }
+        ],
+        "method": "GET",
+        "name": "messages",
+        "sortPriority": 0.0,
+        "url": "${[ API ]}/channels/1/messages",
+        "urlParameters": [
+          {
+            "enabled": false,
+            "name": "page",
+            "value": "1",
+            "id": "fVH9ZECq0e"
+          },
+          {
+            "enabled": true,
+            "name": "unread",
+            "value": "1",
+            "id": "pScc267yzn"
+          },
+          {
+            "enabled": false,
+            "name": "per_page",
+            "value": "2",
+            "id": "e0Det5yEgI"
+          },
+          {
+            "enabled": true,
+            "name": "",
+            "value": "",
+            "id": "pmkiFFFDr0"
+          }
+        ]
+      },
+      {
+        "model": "http_request",
+        "id": "rq_J7YJ3gdUkF",
+        "createdAt": "2024-10-28T03:14:09",
+        "updatedAt": "2024-10-28T04:53:51",
+        "workspaceId": "wk_YSrzXmNxp3",
+        "folderId": "fl_DikginT4RX",
+        "authentication": {
+          "token": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJleHAiOjE3MzA2ODExNTF9.zwS7cIwg9Nrf-1uT82gL_HG7rw7AvFvirkcd2C9iH8w"
+        },
+        "authenticationType": "bearer",
+        "body": {
+          "text": ""
+        },
+        "bodyType": "application/json",
+        "description": "",
+        "headers": [
+          {
+            "enabled": true,
+            "name": "Content-Type",
+            "value": "application/json",
+            "id": null
+          }
+        ],
+        "method": "GET",
+        "name": "index",
+        "sortPriority": 2000.0,
+        "url": "${[ API ]}/channels",
+        "urlParameters": [
+          {
+            "enabled": true,
+            "name": "website",
+            "value": "netflix.com",
+            "id": null
+          },
+          {
+            "enabled": true,
+            "name": "location",
+            "value": "video/1234",
+            "id": null
+          },
+          {
+            "enabled": true,
+            "name": "",
+            "value": "",
+            "id": null
+          }
+        ]
+      },
+      {
+        "model": "http_request",
+        "id": "rq_OoI38ykrgu",
+        "createdAt": "2024-10-28T02:49:58",
+        "updatedAt": "2024-10-28T05:05:53",
+        "workspaceId": "wk_YSrzXmNxp3",
+        "folderId": "fl_DikginT4RX",
+        "authentication": {
+          "token": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJleHAiOjE3MzA2ODExNTF9.zwS7cIwg9Nrf-1uT82gL_HG7rw7AvFvirkcd2C9iH8w"
+        },
+        "authenticationType": "bearer",
+        "body": {
+          "text": ""
+        },
+        "bodyType": "application/json",
+        "description": "",
+        "headers": [
+          {
+            "enabled": true,
+            "name": "Content-Type",
+            "value": "application/json",
+            "id": null
+          }
+        ],
+        "method": "GET",
+        "name": "show",
+        "sortPriority": 1000.0,
+        "url": "${[ API ]}/channels/1",
+        "urlParameters": []
+      },
+      {
+        "model": "http_request",
+        "id": "rq_B7PgEXhjFt",
+        "createdAt": "2024-10-28T00:03:49",
+        "updatedAt": "2024-11-01T23:37:21",
+        "workspaceId": "wk_YSrzXmNxp3",
+        "folderId": "fl_DikginT4RX",
+        "authentication": {
+          "token": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJleHAiOjE3MzA2OTQ2NzR9.yX2HSPY08qegwycZAGX4OfQIQa5iPKCAQBM_VOvcAiU"
+        },
+        "authenticationType": "bearer",
+        "body": {
+          "text": "{\n  \"channel\": {\n    \"website\": \"cuevana.com\",\n    \"location\": \"video/1234\"\n  }\n}"
+        },
+        "bodyType": "application/json",
+        "description": "",
+        "headers": [
+          {
+            "enabled": true,
+            "name": "Content-Type",
+            "value": "application/json",
+            "id": null
+          }
+        ],
+        "method": "POST",
+        "name": "create",
+        "sortPriority": 0.0,
+        "url": "${[ API ]}/channels",
+        "urlParameters": []
+      },
+      {
+        "model": "http_request",
+        "id": "rq_Yg6DdMcKgU",
+        "createdAt": "2024-10-26T21:51:33",
+        "updatedAt": "2024-10-28T00:04:00",
+        "workspaceId": "wk_YSrzXmNxp3",
+        "folderId": "fl_gHQIkxRCOV",
+        "authentication": {},
+        "authenticationType": null,
+        "body": {
+          "text": "{\n  \"email\": \"holaaaa@gmail.com\",\n  \"password\": \"holaa\"\n}"
+        },
+        "bodyType": "application/json",
+        "description": "",
+        "headers": [
+          {
+            "enabled": true,
+            "name": "Content-Type",
+            "value": "application/json",
+            "id": null
+          }
+        ],
+        "method": "POST",
+        "name": "login",
+        "sortPriority": 0.0,
+        "url": "${[ API ]}/users/login",
+        "urlParameters": []
+      },
+      {
+        "model": "http_request",
+        "id": "rq_tuGrC6cWia",
+        "createdAt": "2024-10-26T20:44:32",
+        "updatedAt": "2024-10-28T00:04:06",
+        "workspaceId": "wk_YSrzXmNxp3",
+        "folderId": "fl_gHQIkxRCOV",
+        "authentication": {},
+        "authenticationType": null,
+        "body": {
+          "text": "{\n  \"user\": {\n    \"username\": \"holaaa\",\n    \"email\": \"holaaaa@gmail.com\",\n    \"password\": \"holaa\",\n    \"avatar\": \"green\"\n  }\n}"
+        },
+        "bodyType": "application/json",
+        "description": "",
+        "headers": [
+          {
+            "enabled": true,
+            "name": "Content-Type",
+            "value": "application/json",
+            "id": null
+          }
+        ],
+        "method": "POST",
+        "name": "sign up",
+        "sortPriority": 1000.0,
+        "url": "${[ API ]}/users/signup",
+        "urlParameters": []
+      }
+    ],
+    "grpcRequests": [],
+    "websocketRequests": []
+  }
+}
