@@ -56,6 +56,9 @@ group :development, :test do
 
   # y su integración con rails
   gem 'factory_bot_rails', require: false
+
+  # Para leer .env-files
+  gem 'dotenv-rails'
 end
 
 group :development do
