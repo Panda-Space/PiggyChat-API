@@ -41,6 +41,9 @@ gem "kaminari", "~> 1.2.2"
 # Para paginación de registros
 gem "activerecord-import", "~> 1.5"
 
+# Para cors
+gem 'rack-cors'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
